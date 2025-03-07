@@ -1,377 +1,154 @@
--- Tải thư viện giao diện
-local redzlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/GiaoDien/refs/heads/main/AnhTuanIOS"))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "DeathXUltimate", HidePremium = false, IntroText = "SyntaXDeath Scripts Hub V1", SaveConfig = true, ConfigFolder = "Scripts"})
 
--- Tạo Window chính
-local Window = redzlib:MakeWindow({
-    Title = "Tuấn Anh IOS Hub",
-    SubTitle = "Powered by RedzLib | Discord.gg/MkpDxJVTyb",
-    Icon = "rbxassetid://112455697889846"
-})
-
--- Khởi tạo biến
-local mainGui = nil
-local isVisible = true
-
--- Tìm giao diện chính (ScreenGui hoặc Frame) của redzlib
-if Window and typeof(Window) == "table" then
-    for k, v in pairs(Window) do
-        if v:IsA("ScreenGui") or v:IsA("Frame") then
-            mainGui = v
-            break
-        end
-    end
-end
-
--- Đảm bảo giao diện hiển thị ban đầu và sửa lỗi ẩn/hiện
-if mainGui then
-    mainGui.Visible = true
-    mainGui.Enabled = true -- Thêm Enabled để đảm bảo tương thích với một số UI library
-else
-    warn("Không tìm thấy giao diện chính của redzlib. Vui lòng kiểm tra tài liệu!")
-end
-
--- Tạo các tab
-local HomeTab = Window:MakeTab({
-    Name = "Trang Chủ",
-    Icon = "rbxassetid://10723407389",
+local TabBloxFruits = Window:MakeTab({
+    Name = "Blox Fruits",
+    Icon = "https://img.icons8.com/plasticine/2x/fruits.png",
     PremiumOnly = false
 })
 
--- Thêm thông tin hệ thống (FPS, Ping) vào Trang Chủ
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-
-HomeTab:AddLabel("Thông Tin Hệ Thống")
-local fpsLabel = HomeTab:AddLabel("FPS: Calculating...")
-local pingLabel = HomeTab:AddLabel("Ping: Calculating...")
-
--- Tính toán FPS
-local lastFrame = tick()
-local frameCount = 0
-RunService.RenderStepped:Connect(function()
-    frameCount = frameCount + 1
-    if tick() - lastFrame >= 1 then
-        fpsLabel.Text = "FPS: " .. math.floor(frameCount)
-        frameCount = 0
-        lastFrame = tick()
-    end
-end)
-
--- Tính toán Ping
-spawn(function()
-    while wait(2) do
-        local ping = math.floor(Players.LocalPlayer:GetNetworkPing() * 1000)
-        pingLabel.Text = "Ping: " .. ping .. "ms"
-    end
-end)
-
-local DiscordTab = Window:MakeTab({"Discord", "info"})
-DiscordTab:AddDiscordInvite({
-    Name = "Tham Gia Discord",
-    Description = "Tham gia cộng đồng của chúng tôi!",
-    Logo = "rbxassetid://112455697889846",
-    Invite = "https://discord.gg/MkpDxJVTyb"
+OrionLib:MakeNotification({
+    Name = "HEY",
+    Content = "linktr.ee/codeweb.com !",
+    Image = "rbxassetid://4483345998",
+    Time = 5
 })
 
-local FacebookTab = Window:MakeTab({"Facebook", "info"})
-FacebookTab:AddDiscordInvite({
-    Name = "Tuấn Anh",
-    Description = "Theo dõi Facebook của mình nhé!",
-    Logo = "rbxassetid://112455697889846",
-    Invite = "https://www.facebook.com/tuanangg10"
+local SectionBloxFruits = TabBloxFruits:AddSection({
+    Name = "Blox Fruits Scripts"
 })
 
-local HotScriptTab = Window:MakeTab({
-    Name = "Script Hot Nhất",
-    Icon = "rbxassetid://10723407389",
+-- Add Blox Fruits scripts
+TabBloxFruits:AddButton({
+    Name = "Auto Farm Script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Blox-Fruits-Script/main/AutoFarm.lua"))()
+        print("Auto Farm script pressed")
+    end
+})
+
+TabBloxFruits:AddButton({
+    Name = "Teleport Script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Blox-Fruits-Script/main/Teleport.lua"))()
+        print("Teleport script pressed")
+    end
+})
+
+TabBloxFruits:AddButton({
+    Name = "Devil Fruits Unlocker",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Blox-Fruits-Script/main/DevilFruitUnlocker.lua"))()
+        print("Devil Fruits Unlocker script pressed")
+    end
+})
+
+-- Blade Ball Tab
+local TabBladeBall = Window:MakeTab({
+    Name = "Blade Ball",
+    Icon = "https://img.icons8.com/plasticine/2x/basketball-player.png",
     PremiumOnly = false
 })
 
--- Thêm các nút vào tab Script Hot Nhất
-HotScriptTab:AddButton({
-    Name = "Redz Hub",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Redz Hub đang được tải!", Duration = 3})
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))(Settings)
-    end    
-})
-HotScriptTab:AddButton({
-    Name = "w-azure",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "w-azure đang được tải!", Duration = 3})
-        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/3b2169cf53bc6104dabe8e19562e5cc2.lua"))()
-    end    
-})
-HotScriptTab:AddButton({
-    Name = "Xero Hub",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Xero Hub đang được tải!", Duration = 3})
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Xero2409/XeroHub/refs/heads/main/main.lua"))()
-    end    
-})
-HotScriptTab:AddButton({
-    Name = "Zenith Hub",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Zenith Hub đang được tải!", Duration = 3})
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Efe0626/RaitoHub/main/Script"))()
-    end    
-})
-HotScriptTab:AddButton({
-    Name = "Bắp Red Hub",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Bắp Red Hub đang được tải!", Duration = 3})
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/BapRed/main/BapRedHub"))()
-    end    
-})
-HotScriptTab:AddButton({
-    Name = "Trẩu Roblox",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Trẩu Roblox đang được tải!", Duration = 3})
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/TrauHub/refs/heads/main/TrauV1"))()
-    end    
-})
-HotScriptTab:AddButton({
-    Name = "Zis Hub",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Zis Hub đang được tải!", Duration = 3})
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/giaotrinhhoc/ZisRb/refs/heads/main/ZisRbV5"))()
-    end    
-})
-HotScriptTab:AddButton({
-    Name = "Quantum Hub",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Quantum Hub đang được tải!", Duration = 3})
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Trustmenotcondom/QTONYX/refs/heads/main/QuantumOnyx.lua"))()
-    end    
-})
-HotScriptTab:AddButton({
-    Name = "Cokka Hub",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Cokka Hub đang được tải!", Duration = 3})
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/UserDevEthical/Loadstring/main/CokkaHub.lua"))()
-    end    
-})
-HotScriptTab:AddButton({
-    Name = "HoHo Hub (Yêu Cầu Key)",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "HoHo Hub đang được tải! Vui lòng lấy key.", Duration = 3})
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI"))()
-    end    
+local SectionBladeBall = TabBladeBall:AddSection({
+    Name = "Blade Ball Scripts"
 })
 
-local PremiumScriptTab = Window:MakeTab({
-    Name = "Script Premium Free",
-    Icon = "rbxassetid://10709761889",
+-- Add Blade Ball scripts
+TabBladeBall:AddButton({
+    Name = "Speed Hack",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Blade-Ball-Script/main/SpeedHack.lua"))()
+        print("Speed Hack script pressed")
+    end
+})
+
+TabBladeBall:AddButton({
+    Name = "Auto Farm",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Blade-Ball-Script/main/AutoFarm.lua"))()
+        print("Auto Farm script pressed")
+    end
+})
+
+TabBladeBall:AddButton({
+    Name = "Unlock All Characters",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Blade-Ball-Script/main/UnlockAllCharacters.lua"))()
+        print("Unlock All Characters script pressed")
+    end
+})
+
+-- Strangest Battleground Tab
+local TabStrangestBattleground = Window:MakeTab({
+    Name = "Strangest Battleground",
+    Icon = "https://img.icons8.com/plasticine/2x/battle.png",
     PremiumOnly = false
 })
 
-PremiumScriptTab:AddButton({
-    Name = "Cụt Tay Hub Auto Mirage",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Cụt Tay Hub Auto Mirage đang được tải!", Duration = 3})
-        repeat wait(5) until game:IsLoaded()
-        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/a1498369f289af2671cca90085f23fb8.lua"))()
-    end
+local SectionStrangestBattleground = TabStrangestBattleground:AddSection({
+    Name = "Strangest Battleground Scripts"
 })
-PremiumScriptTab:AddButton({
-    Name = "KaiTan Premium",
+
+-- Add Strangest Battleground scripts
+TabStrangestBattleground:AddButton({
+    Name = "ESP",
     Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "KaiTan Premium đang được tải!", Duration = 3})
-        repeat wait(5) until game:IsLoaded()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/simple-hubs/contents/refs/heads/main/bloxfruit-kaitan-main.lua"))()
-    end
-})
-PremiumScriptTab:AddButton({
-    Name = "Auto Bounty Xero Hub",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Auto Bounty Xero Hub đang được tải!", Duration = 3})
-        repeat wait(5) until game:IsLoaded()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/pisovn/OisiRoblox1/refs/heads/main/AutoBountyXero"))()
-    end
-})
-PremiumScriptTab:AddButton({
-    Name = "Fix Lag Premium",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Fix Lag Premium đang được tải!", Duration = 3})
-        repeat wait(5) until game:IsLoaded()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/TurboLite/Script/main/FixLag.lua"))()
-    end
-})
-PremiumScriptTab:AddButton({
-    Name = "Aim Buddy Gun (Key: Kao)",
-    Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Aim Buddy Gun đang được tải! Key: Kao", Duration = 3})
-        repeat wait(5) until game:IsLoaded()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Kaodontsuyy/BloxFruit/refs/heads/main/Kaohub.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Strangest-Battleground-Script/main/ESP.lua"))()
+        print("ESP script pressed")
     end
 })
 
-local BananaMaruTab = Window:MakeTab({
-    Name = "Script Banana | Maru",
-    Icon = "rbxassetid://10709761889",
+TabStrangestBattleground:AddButton({
+    Name = "Aimbot",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Strangest-Battleground-Script/main/Aimbot.lua"))()
+        print("Aimbot script pressed")
+    end
+})
+
+TabStrangestBattleground:AddButton({
+    Name = "No Recoil",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Strangest-Battleground-Script/main/NoRecoil.lua"))()
+        print("No Recoil script pressed")
+    end
+})
+
+-- Murder Mystery 2 Tab
+local TabMM2 = Window:MakeTab({
+    Name = "Murder Mystery 2",
+    Icon = "https://img.icons8.com/plasticine/2x/mystery.png",
     PremiumOnly = false
 })
 
-BananaMaruTab:AddButton({
-    Name = "Maru Hub",
+local SectionMM2 = TabMM2:AddSection({
+    Name = "Murder Mystery 2 Scripts"
+})
+
+-- Add Murder Mystery 2 scripts
+TabMM2:AddButton({
+    Name = "ESP",
     Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Maru Hub đang được tải!", Duration = 3})
-        repeat wait(5) until game:IsLoaded()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/AutoKick/refs/heads/main/TrollHaHa"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Murder-Mystery-2-Script/main/ESP.lua"))()
+        print("ESP script pressed")
     end
 })
-BananaMaruTab:AddButton({
-    Name = "Banana Hub",
+
+TabMM2:AddButton({
+    Name = "Fly Hack",
     Callback = function()
-        redzlib:MakeNotification({Title = "Đang tải...", Text = "Banana Hub đang được tải!", Duration = 3})
-        repeat wait(5) until game:IsLoaded()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/AnhDzaiScript/AutoKick/refs/heads/main/TrollHaHa"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Murder-Mystery-2-Script/main/FlyHack.lua"))()
+        print("Fly Hack script pressed")
     end
 })
 
--- Tab Cài Đặt (Tính năng xịn như Redz Hub)
-local SettingsTab = Window:MakeTab({
-    Name = "Cài Đặt",
-    Icon = "rbxassetid://10734949877",
-    PremiumOnly = false
-})
-
-SettingsTab:AddToggle({
-    Name = "Tự Động Fix Lag",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/TurboLite/Script/main/FixLag.lua"))()
-            redzlib:MakeNotification({Title = "Fix Lag", Text = "Đã bật tự động fix lag!", Duration = 3})
-        else
-            redzlib:MakeNotification({Title = "Fix Lag", Text = "Đã tắt tự động fix lag!", Duration = 3})
-        end
-    end
-})
-
-SettingsTab:AddButton({
-    Name = "Kiểm Tra Cập Nhật",
+TabMM2:AddButton({
+    Name = "Unlock All Skins",
     Callback = function()
-        redzlib:MakeNotification({Title = "Cập Nhật", Text = "Đang kiểm tra cập nhật...", Duration = 3})
-        wait(2)
-        redzlib:MakeNotification({Title = "Cập Nhật", Text = "Phiên bản hiện tại là mới nhất!", Duration = 3})
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Synthetic6969/Murder-Mystery-2-Script/main/UnlockAllSkins.lua"))()
+        print("Unlock All Skins script pressed")
     end
 })
 
--- Tạo nút bên ngoài để ẩn/hiện hub
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
-local UserInputService = game:GetService("UserInputService")
-
--- Tạo ScreenGui cho nút toggle
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "ToggleHubGui"
-screenGui.Parent = PlayerGui
-screenGui.ResetOnSpawn = false
-
--- Tạo ImageButton (nút hình tròn với mũi tên)
-local toggleButton = Instance.new("ImageButton")
-toggleButton.Name = "ToggleButton"
-toggleButton.Size = UDim2.new(0, 50, 0, 50)
-toggleButton.Position = UDim2.new(0, 10, 0, 10) -- Góc trên bên trái
-toggleButton.BackgroundTransparency = 1
-toggleButton.Image = "rbxassetid://112455697889846" -- ID hình ảnh từ hình bạn cung cấp
-toggleButton.Parent = screenGui
-
--- Hiệu ứng hover cho nút toggle (giống Redz Hub)
-local TweenService = game:GetService("TweenService")
-local hoverTweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
-local defaultSize = toggleButton.Size
-local hoverSize = UDim2.new(0, 60, 0, 60)
-
-toggleButton.MouseEnter:Connect(function()
-    TweenService:Create(toggleButton, hoverTweenInfo, {Size = hoverSize}):Play()
-end)
-
-toggleButton.MouseLeave:Connect(function()
-    TweenService:Create(toggleButton, hoverTweenInfo, {Size = defaultSize}):Play()
-end)
-
--- Xử lý sự kiện khi nhấn nút
-if mainGui then
-    toggleButton.MouseButton1Click:Connect(function()
-        isVisible = not isVisible
-        mainGui.Visible = isVisible
-        if isVisible then
-            toggleButton.Image = "rbxassetid://112455697889846" -- Hiển thị (mũi tên sang phải)
-            redzlib:MakeNotification({Title = "Hub", Text = "Đã hiển thị hub!", Duration = 2})
-        else
-            toggleButton.Image = "rbxassetid://112455697889846" -- Ẩn (mũi tên sang trái)
-            redzlib:MakeNotification({Title = "Hub", Text = "Đã ẩn hub!", Duration = 2})
-        end
-    end)
-else
-    warn("Không thể tìm thấy giao diện chính để ẩn/hiện. Vui lòng kiểm tra tài liệu redzlib!")
-end
-
--- Làm nút có thể kéo thả
-local dragging, dragInput, dragStart, startPos
-
-toggleButton.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = true
-        dragStart = input.Position
-        startPos = toggleButton.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
-end)
-
-toggleButton.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        dragInput = input
-    end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-    if input == dragInput and dragging then
-        local delta = input.Position - dragStart
-        toggleButton.Position = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale,
-            startPos.Y.Offset + delta.Y
-        )
-    end
-end)
-
--- Thêm phím tắt để mở/đóng hub (phím Ctrl bên phải)
-local toggleKey = Enum.KeyCode.RightControl
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == toggleKey then
-        isVisible = not isVisible
-        if mainGui then
-            mainGui.Visible = isVisible
-            if isVisible then
-                toggleButton.Image = "rbxassetid://112455697889846"
-                redzlib:MakeNotification({Title = "Hub", Text = "Đã hiển thị hub!", Duration = 2})
-            else
-                toggleButton.Image = "rbxassetid://112455697889846"
-                redzlib:MakeNotification({Title = "Hub", Text = "Đã ẩn hub!", Duration = 2})
-            end
-        end
-    end
-end)
-
--- Thêm thông báo chào mừng
-redzlib:MakeNotification({
-    Title = "Chào Mừng!",
-    Text = "Tuấn Anh IOS Hub đã được khởi động. Nhấn Ctrl phải để ẩn/hiện hub.",
-    Duration = 5
-})
-
--- Tự động kiểm tra game hiện tại và thông báo
-local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-redzlib:MakeNotification({
-    Title = "Game Được Phát Hiện",
-    Text = "Bạn đang chơi: " .. gameName,
-    Duration = 5
-})
+OrionLib:Init()
